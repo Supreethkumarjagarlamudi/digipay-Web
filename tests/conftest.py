@@ -23,7 +23,13 @@ BASE_URL = os.environ.get(
 BACKEND_URL = os.environ.get(
     "DIGIPAY_BACKEND_URL",
     "https://web-production-86613.up.railway.app"
-)
+).strip()
+
+if not BACKEND_URL.startswith("http://") and not BACKEND_URL.startswith("https://"):
+    if BACKEND_URL.startswith("localhost") or BACKEND_URL.startswith("127.0.0.1"):
+        BACKEND_URL = f"http://{BACKEND_URL}"
+    else:
+        BACKEND_URL = f"https://{BACKEND_URL}"
 
 ADMIN_PHONE = os.environ.get("ADMIN_PHONE", "9999999999")
 DEFAULT_TIMEOUT = int(os.environ.get("SELENIUM_TIMEOUT", "20"))
@@ -44,6 +50,8 @@ def build_driver() -> webdriver.Chrome:
     opts.add_argument("--disable-infobars")
     opts.add_argument("--ignore-certificate-errors")
     opts.add_argument("--allow-insecure-localhost")
+    opts.add_argument("--disable-web-security")
+
     # Suppress console noise
     opts.add_experimental_option("excludeSwitches", ["enable-logging"])
     opts.add_experimental_option("prefs", {
