@@ -372,7 +372,7 @@ def write_summary_sheet(wb: openpyxl.Workbook, tests: list[dict], run_meta: dict
         ("Repository",    run_meta.get("repo",         "harishbalaji826-ops/Digipay-Web")),
         ("Branch",        run_meta.get("branch",       "main")),
         ("Commit SHA",    run_meta.get("sha",          "N/A")),
-        ("App URL",       run_meta.get("app_url",      "https://harishbalaji826-ops.github.io/Digipay-Web/")),
+        ("App URL",       run_meta.get("app_url") or os.environ.get("DIGIPAY_BASE_URL") or "https://harishbalaji826-ops.github.io/digipay-Web/"),
         ("Backend URL",   run_meta.get("backend_url",  "Railway")),
         ("Browser",       run_meta.get("browser",      "Chrome Headless")),
         ("Test Runner",   "pytest + Selenium 4"),
@@ -656,7 +656,7 @@ if __name__ == "__main__":
     parser.add_argument("--run-id",  default="")
     parser.add_argument("--sha",     default="")
     parser.add_argument("--branch",  default="main")
-    parser.add_argument("--app-url", default="https://harishbalaji826-ops.github.io/Digipay-Web/")
+    parser.add_argument("--app-url", default=None)
     args = parser.parse_args()
 
     meta = {
@@ -664,8 +664,7 @@ if __name__ == "__main__":
         "sha":         args.sha     or os.environ.get("GITHUB_SHA",        "local"),
         "branch":      args.branch  or os.environ.get("GITHUB_REF_NAME",   "main"),
         "repo":        os.environ.get("GITHUB_REPOSITORY", "harishbalaji826-ops/Digipay-Web"),
-        "app_url":     args.app_url or os.environ.get("DIGIPAY_BASE_URL",
-                        "https://harishbalaji826-ops.github.io/Digipay-Web/"),
+        "app_url":     args.app_url or os.environ.get("DIGIPAY_BASE_URL") or "https://harishbalaji826-ops.github.io/digipay-Web/",
         "backend_url": os.environ.get("DIGIPAY_BACKEND_URL", "Railway"),
         "env":         "GitHub Pages + Railway",
         "python":      sys.version.split()[0],
