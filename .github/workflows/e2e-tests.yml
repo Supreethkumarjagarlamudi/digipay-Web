@@ -35,7 +35,6 @@ jobs:
     timeout-minutes: 30
 
     env:
-      DIGIPAY_BASE_URL: ${{ github.event.inputs.target_url || 'https://harishbalaji826-ops.github.io/digipay-Web/' }}
       DIGIPAY_BACKEND_URL: ${{ secrets.DIGIPAY_BACKEND_URL || 'https://web-production-86613.up.railway.app' }}
       ADMIN_PHONE: "9999999999"
       SELENIUM_TIMEOUT: "20"
@@ -44,6 +43,18 @@ jobs:
       # ── 1. Checkout ───────────────────────────────────────────────────────
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
+
+      # ── 1.5. Set dynamic App URL ──────────────────────────────────────────
+      - name: "🔧 Set dynamic App URL"
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "DIGIPAY_BASE_URL=${{ github.event.inputs.target_url }}" >> $GITHUB_ENV
+          else
+            REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+            OWNER_NAME="${{ github.repository_owner }}"
+            OWNER_LOWER=$(echo "$OWNER_NAME" | tr '[:upper:]' '[:lower:]')
+            echo "DIGIPAY_BASE_URL=https://${OWNER_LOWER}.github.io/${REPO_NAME}/" >> $GITHUB_ENV
+          fi
 
       # ── 2. Set up Python (BEFORE Chrome so pip install always runs) ───────
       - name: "🐍 Set up Python 3.12"
