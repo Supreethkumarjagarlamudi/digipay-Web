@@ -372,7 +372,7 @@ def write_summary_sheet(wb: openpyxl.Workbook, tests: list[dict], run_meta: dict
         ("Repository",    run_meta.get("repo",         "harishbalaji826-ops/Digipay-Web")),
         ("Branch",        run_meta.get("branch",       "main")),
         ("Commit SHA",    run_meta.get("sha",          "N/A")),
-        ("App URL",       run_meta.get("app_url") or os.environ.get("DIGIPAY_BASE_URL") or "https://harishbalaji826-ops.github.io/digipay-Web/"),
+        ("App URL",       run_meta.get("app_url") or os.environ.get("DIGIPAY_BASE_URL") or "https://supreethkumarjagarlamudi.github.io/digipay-Web/"),
         ("Backend URL",   run_meta.get("backend_url",  "Railway")),
         ("Browser",       run_meta.get("browser",      "Chrome Headless")),
         ("Test Runner",   "pytest + Selenium 4"),
